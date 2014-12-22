@@ -1,5 +1,44 @@
 from threading import Thread
 
+#GamePiece class
+class GamePiece:
+	def __init__(typ, team, position):
+		this.team = team
+		this.position = position
+		this.typ = typ
+
+# GameState class
+class GameState:
+	def __init__():
+		self.pieces = []
+		
+		# Create the pawns
+		for i in range(16):
+			pos = "{}{}".format(chr(ord('a') + (i % 8) ), 2 if i < 8 else 7)
+			cursor = GamePiece('P', 'W' if i < 8 else 'B', pos)
+			self.pieces.append(cursor)
+		# Kings
+		self.pieces.append(GamePiece('K', 'W', "e1"))
+		self.pieces.append(GamePiece('K', 'B', "e8"))
+		# Queens
+		self.pieces.append(GamePiece('Q', 'W', "d1"))
+		self.pieces.append(GamePiece('Q', 'B', "d8"))
+		# Bishops
+		self.pieces.append(GamePiece('B', 'W', "c1"))
+		self.pieces.append(GamePiece('B', 'W', "f1"))
+		self.pieces.append(GamePiece('B', 'B', "c8"))
+		self.pieces.append(GamePiece('B', 'B', "f8"))
+		# Knights
+		self.pieces.append(GamePiece('N', 'W', "b1"))
+		self.pieces.append(GamePiece('N', 'W', "g1"))
+		self.pieces.append(GamePiece('N', 'B', "b8"))
+		self.pieces.append(GamePiece('N', 'B', "g8"))
+		# Rooks
+		self.pieces.append(GamePiece('R', 'W', "a1"))
+		self.pieces.append(GamePiece('R', 'W', "h1"))
+		self.pieces.append(GamePiece('R', 'B', "a8"))
+		self.pieces.append(GamePiece('R', 'B', "h8"))
+
 # GameLogic Class
 # Constructor Parameters: player, game_id, command
 # -player: Player currently executing a move
