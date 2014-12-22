@@ -2,20 +2,30 @@ from threading import Thread
 
 #GamePiece class
 class GamePiece:
-	def __init__(typ, team, position):
-		this.team = team
-		this.position = position
-		this.typ = typ
+	def __init__(self, typ, team, position):
+		self.team = team
+		self.position = position
+		self.typ = typ
+		self.victims = []
+		self.killer = None
+	def get_kills():
+		return self.victims
+	def get_killer():
+		return self.killer
 
 # GameState class
 class GameState:
-	def __init__():
+	def __init__(self):
+		# List of all pieces currently in play.
 		self.pieces = []
+		# List of all captured pieces (with their point of capture)
+		self.captured = []
+		self.current_move = 'W'
 		
 		# Create the pawns
 		for i in range(16):
-			pos = "{}{}".format(chr(ord('a') + (i % 8) ), 2 if i < 8 else 7)
-			cursor = GamePiece('P', 'W' if i < 8 else 'B', pos)
+			pos = "{}{}".format(chr(ord('a') + (i % 8) ), (2 if i < 8 else 7))
+			cursor = GamePiece('P', ('W' if i < 8 else 'B'), pos)
 			self.pieces.append(cursor)
 		# Kings
 		self.pieces.append(GamePiece('K', 'W', "e1"))
@@ -38,6 +48,12 @@ class GameState:
 		self.pieces.append(GamePiece('R', 'W', "h1"))
 		self.pieces.append(GamePiece('R', 'B', "a8"))
 		self.pieces.append(GamePiece('R', 'B', "h8"))
+
+	def __parse_game(movelist):
+		#FIXME: RESUME HERE (EEKAHN)
+		pass
+	def __str__(self):
+		return "Oh....hi...didn't think you were gonna look here ''':|"
 
 # GameLogic Class
 # Constructor Parameters: player, game_id, command
