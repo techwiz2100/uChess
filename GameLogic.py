@@ -49,8 +49,30 @@ class GameState:
 		self.pieces.append(GamePiece('R', 'B', "a8"))
 		self.pieces.append(GamePiece('R', 'B', "h8"))
 
-	def __parse_game(movelist):
-		#FIXME: RESUME HERE (EEKAHN)
+	def __parse_game(moves_string):
+		move_list = re.split("[0-9]+[.]", moves_string)
+		del move_list[0] # First element will always be empty after split.
+
+		# Iterate through the elements of the move string.
+		for movestr in move_list:
+			Wmove,Bmove = movestr.strip().split(' ')
+
+			# Process white move
+			match = re.search('[KQBNR]', Wmove)
+			if match:
+				piece = match.group()[0]
+			else:
+				piece = 'P'
+			start,dest = re.split("[-x]", Wmove.lstrip(piece))
+
+			for cursor in self.pieces:
+				if cursor.position == start:
+					if cursor.typ != piece:
+						#FIXME: (EEKAHN) Pass for now, but this would be bad.
+						pass
+					self.__move_piece(cursor, dest)
+			
+	def __move_piece(piece, dest):
 		pass
 	def __str__(self):
 		return "Oh....hi...didn't think you were gonna look here ''':|"
@@ -71,7 +93,7 @@ class GameLogic(Thread):
 		#TODO: Loads game configuration from a database of wonders.
 		# for now, use dummy data. We are effectivly 'storing' as in
 		# PGN format - we turn this into usable data.
-		dummy_moves = "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6"
+		dummy_moves = "1. e2-e4 e7-e5 2. Ng1-f3 Nb8-c6 3. Bf1-b5 a7-a6"
 		#TODO: Need to rebuild move list in a workable game object.
 		return 0
 	def run(self):
