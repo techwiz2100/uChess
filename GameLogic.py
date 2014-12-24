@@ -61,8 +61,13 @@ class GameState:
 			match = re.search('[KQBNR]', Wmove)
 			if match:
 				piece = match.group()[0]
+			elif Wmove[0] == 'O':
+				#TODO: Either right/left castling.
+				pass
 			else:
 				piece = 'P'
+				#FIXME: Need to look for promotion
+
 			start,dest = re.split("[-x]", Wmove.lstrip(piece))
 
 			for cursor in self.pieces:
@@ -71,8 +76,15 @@ class GameState:
 						#FIXME: (EEKAHN) Pass for now, but this would be bad.
 						pass
 					self.__move_piece(cursor, dest)
+					# TODO: For promotion, may want to check if the piece was
+					# promoted here.
 			
 	def __move_piece(piece, dest):
+		#FIXME: (EEKAHN) Resume here.
+		pass
+	def __do_castle(team, side):
+		# team = 'W' or 'B'
+		# side = 'K' or 'Q' (Kingside/queenside)
 		pass
 	def __str__(self):
 		return "Oh....hi...didn't think you were gonna look here ''':|"
