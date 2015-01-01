@@ -1,0 +1,4 @@
+{% extends "base.json" %}
+{% block content %}
+	message: "{{ err_msg }}"
+{% endblock %}

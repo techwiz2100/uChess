@@ -1,0 +1,10 @@
+{
+	{% set starttime = time.time() %}
+	application: "{{ app_name }}",
+	version: {{ app_version }},
+	date: {{ datetime.datetime }},
+	status: {{ status }},
+	{% block content %}{% endblock %},
+	gentime: {{ time.time() - starttime }}
+	{% endset %}
+}
