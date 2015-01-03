@@ -17,19 +17,53 @@ class GamePiece:
 		return self.victims
 	def get_killer():
 		return self.killer
-	def get_valid_moves():
+	def __is_teamKill(pieces, move):
+		for cur in pieces:
+			if cur is self:
+				continue
+			if (cur.team == self.team) and (cur.position == move)
+				return True
+		return False
+	def get_valid_moves(pieces):
 			moves = []
 			row,col = an_to_num(self.position)
 			if self.typ == "P":
 				if self.team == 'W':
-					if (row + 1) < 8:
+					if ((row + 1) < 8) and not (self.__is_teamKill(num_to_an(row + 1, col))):
 						moves.append(num_to_an(row + 1, col))
-						if (row + 2) < 8:
-							moves.append("{}{}".format(chr(col + ord('a')), row + 2) 
+						if (row == 1) and ((row + 2) < 8):
+							if not self.__is_teamKill(num_to_an(row + 2, col)):
+								moves.append(num_to_an(row + 2, col))
 				else
-					#FIXME: Black pawn move
-			elif self.typ == "K"
+					if ((row - 1) >= 0) and not (self.__is_teamKill(num_to_an(row - 1, col))):
+						moves.append(num_to_an(row - 1, col))
+						if (row == 6) and ((row - 2) >= 0):
+							if not self.__is_teamKill(num_to_an(row - 2, col)):
+								moves.append(num_to_an(row - 2, col))
+				#TODO: Still need to do captures, and en-passante (lol spelling)
+				# also don't forget promotions.
+			elif self.typ == "K":
+				for i in range(row - 1, row + 1 + 1):
+					if (i < 0) or (i > 7):
+						continue
+					for j in range(col - 1, col + 1 + 1):
+						if (j < 0) or (j < 7):
+							continue
+						if (i == row) and (j == col):
+							continue
+						if self.__is_teamKill(pieces, num_to_an(i,j)):
+							continue
+						#FIXME: Putting the king into check ISN'T VALID. Need to enforce this.
+						moves.append(num_to_an(i, j))
+			elif self.typ == "Q":
 				pass
+			elif self.typ == "B":
+				pass
+			elif self.typ == "N":
+				pass
+			elif self.typ == "R":
+				pass
+
 			return moves
 # GameState class
 class GameState:
