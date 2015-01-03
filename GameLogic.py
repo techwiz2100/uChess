@@ -1,5 +1,10 @@
 from threading import Thread
 
+def an_to_num(cord):
+	return (ord(cord[1]) - ord('1'), ord(cord[0]) - ord('a'))
+def num_to_an(row,col):
+	return "{}{}".format(chr(col + ord('a')), row + 1)
+
 #GamePiece class
 class GamePiece:
 	def __init__(self, typ, team, position):
@@ -12,7 +17,20 @@ class GamePiece:
 		return self.victims
 	def get_killer():
 		return self.killer
-
+	def get_valid_moves():
+			moves = []
+			row,col = an_to_num(self.position)
+			if self.typ == "P":
+				if self.team == 'W':
+					if (row + 1) < 8:
+						moves.append(num_to_an(row + 1, col))
+						if (row + 2) < 8:
+							moves.append("{}{}".format(chr(col + ord('a')), row + 2) 
+				else
+					#FIXME: Black pawn move
+			elif self.typ == "K"
+				pass
+			return moves
 # GameState class
 class GameState:
 	def __init__(self):
@@ -81,7 +99,13 @@ class GameState:
 			
 	def __move_piece(piece, dest):
 		#FIXME: (EEKAHN) Resume here.
-		pass
+		temp_state = list(self.pieces)
+		if piece.typ == 'K':
+			pass
+		elif piece.typ == 'Q':
+			pass
+		elif piece.typ == 'B':
+			pass
 	def __do_castle(team, side):
 		# team = 'W' or 'B'
 		# side = 'K' or 'Q' (Kingside/queenside)
