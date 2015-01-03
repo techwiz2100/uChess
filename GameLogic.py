@@ -1,5 +1,10 @@
 from threading import Thread
 
+def an_to_num(cord):
+	return (ord(cord[1]) - ord('1'), ord(cord[0]) - ord('a'))
+def num_to_an(row,col):
+	return "{}{}".format(chr(col + ord('a')), row + 1)
+
 #GamePiece class
 class GamePiece:
 	def __init__(self, typ, team, position):
@@ -12,7 +17,54 @@ class GamePiece:
 		return self.victims
 	def get_killer():
 		return self.killer
+	def __is_teamKill(pieces, move):
+		for cur in pieces:
+			if cur is self:
+				continue
+			if (cur.team == self.team) and (cur.position == move)
+				return True
+		return False
+	def get_valid_moves(pieces):
+			moves = []
+			row,col = an_to_num(self.position)
+			if self.typ == "P":
+				if self.team == 'W':
+					if ((row + 1) < 8) and not (self.__is_teamKill(num_to_an(row + 1, col))):
+						moves.append(num_to_an(row + 1, col))
+						if (row == 1) and ((row + 2) < 8):
+							if not self.__is_teamKill(num_to_an(row + 2, col)):
+								moves.append(num_to_an(row + 2, col))
+				else
+					if ((row - 1) >= 0) and not (self.__is_teamKill(num_to_an(row - 1, col))):
+						moves.append(num_to_an(row - 1, col))
+						if (row == 6) and ((row - 2) >= 0):
+							if not self.__is_teamKill(num_to_an(row - 2, col)):
+								moves.append(num_to_an(row - 2, col))
+				#TODO: Still need to do captures, and en-passante (lol spelling)
+				# also don't forget promotions.
+			elif self.typ == "K":
+				for i in range(row - 1, row + 1 + 1):
+					if (i < 0) or (i > 7):
+						continue
+					for j in range(col - 1, col + 1 + 1):
+						if (j < 0) or (j < 7):
+							continue
+						if (i == row) and (j == col):
+							continue
+						if self.__is_teamKill(pieces, num_to_an(i,j)):
+							continue
+						#FIXME: Putting the king into check ISN'T VALID. Need to enforce this.
+						moves.append(num_to_an(i, j))
+			elif self.typ == "Q":
+				pass
+			elif self.typ == "B":
+				pass
+			elif self.typ == "N":
+				pass
+			elif self.typ == "R":
+				pass
 
+			return moves
 # GameState class
 class GameState:
 	def __init__(self):
@@ -61,8 +113,13 @@ class GameState:
 			match = re.search('[KQBNR]', Wmove)
 			if match:
 				piece = match.group()[0]
+			elif Wmove[0] == 'O':
+				#TODO: Either right/left castling.
+				pass
 			else:
 				piece = 'P'
+				#FIXME: Need to look for promotion
+
 			start,dest = re.split("[-x]", Wmove.lstrip(piece))
 
 			for cursor in self.pieces:
@@ -71,8 +128,21 @@ class GameState:
 						#FIXME: (EEKAHN) Pass for now, but this would be bad.
 						pass
 					self.__move_piece(cursor, dest)
+					# TODO: For promotion, may want to check if the piece was
+					# promoted here.
 			
 	def __move_piece(piece, dest):
+		#FIXME: (EEKAHN) Resume here.
+		temp_state = list(self.pieces)
+		if piece.typ == 'K':
+			pass
+		elif piece.typ == 'Q':
+			pass
+		elif piece.typ == 'B':
+			pass
+	def __do_castle(team, side):
+		# team = 'W' or 'B'
+		# side = 'K' or 'Q' (Kingside/queenside)
 		pass
 	def __str__(self):
 		return "Oh....hi...didn't think you were gonna look here ''':|"
